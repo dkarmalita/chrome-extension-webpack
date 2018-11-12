@@ -5,7 +5,7 @@ git clone https://github.com/dkarmalita/chrome-extension-webpack.git
 npm i
 npm start
 ```
-2. open [chrome extensions page](chrome://extensions) link in Google Chrome
+2. open <a href="chrome://extensions">chrome extensions page</a> link in Google Chrome
 3. toggle on the `Developer mode` switcher
 4. press `Load unpacked` button and select `./dist` folder in the chooser
 
