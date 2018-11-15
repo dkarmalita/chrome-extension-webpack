@@ -1,1 +1,3 @@
-console.log("panel.js");
+import './panel.css'
+
+console.log("panel.js", (new Date).toISOString());

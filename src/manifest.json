@@ -9,6 +9,11 @@
 
   "author": "Chris Ward",
 
+  "key": "kcbkpnaijopamohahimgbkdocedinoib",
+  // refs:
+  // * https://stackoverflow.com/a/21500707
+  // * https://developer.chrome.com/apps/app_identity#copy_key
+
   "background": {
     "scripts": [
       "background.js",
