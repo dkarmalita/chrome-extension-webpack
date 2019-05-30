@@ -15,15 +15,21 @@ window.onload = function() {
 
     document.getElementById("button").onclick = function() {
 
-        clog('button is clicked')
+        // clog('button is clicked')
+        // // it's sending super-power message which we are going to detect in script.js
+        // chrome.extension.sendMessage({
+        //     type: "super-power",
+        //     payload: 'payload is here'
+        // });
+
+        // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        //   chrome.runtime.sendMessage({type: "popup-button-clicked", tabid:tabs[0].id});
+        // });
+
         // it's sending super-power message which we are going to detect in script.js
         chrome.extension.sendMessage({
-            type: "super-power",
-            payload: 'payload is here'
-        });
-
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-          chrome.runtime.sendMessage({type: "popup-button-clicked", tabid:tabs[0].id});
+            type: "super-power"
         });
     }
 }
+
