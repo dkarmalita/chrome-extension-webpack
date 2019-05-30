@@ -5,16 +5,19 @@ console.log('%cColdFire v0.1.0-dev.1', "color: red; font-size:15px;", (new Date)
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     switch(request.type) {
-        case "super-power":
-            superPower();
+        case 'super-power':
+            superPower(request.payload);
+            break;
+        case 'echo':
+            console.log('echo', request.payload);
             break;
     }
     return true;
 });
 
-var superPower = function() {
+var superPower = function(state) {
     chrome.tabs.getSelected(null, function(tab){
-        chrome.tabs.sendMessage(tab.id, {type: "super-power"});
-        chrome.browserAction.setBadgeText({text: "Wow!"});
+        chrome.tabs.sendMessage(tab.id, {type: 'super-power'}); // send message to selected tab
+        chrome.browserAction.setBadgeText({text: state ? 'Wow!' : ''});
     });
 }

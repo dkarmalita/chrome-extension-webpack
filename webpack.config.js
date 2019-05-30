@@ -137,12 +137,12 @@ module.exports = (env,argv) => {
     mode: isBuild() ? 'production' : 'development',
 
     entry: {
-      'hot-reload': './src/_hot-reload',
+      'hot-reload': './hot-reload',
       background: './src/background',
       content_scripts: './src/content_scripts',
-      devtools: './src/devtools',
+      // devtools: './src/devtools',
       popup: 'src/popup',
-      panel: 'src/devtools/panel',
+      // panel: 'src/devtools/panel',
     },
 
     output: {
@@ -267,34 +267,15 @@ module.exports = (env,argv) => {
         template: './src/popup/index.ejs',
       }),
 
-      new HtmlWebpackPlugin({
-        inject: 'head',
-        chunks: ['devtools'],
-        filename: 'devtools.html',
-        template: './src/devtools/index.ejs',
-      }),
-
-      new HtmlWebpackPlugin({
-        inject: 'head',
-        chunks: ['panel'],
-        filename: 'panel.html',
-        template: './src/devtools/panel.ejs',
-      }),
-
       new CleanWebpackPlugin(['./dist'], {
         root: __dirname, //  Useful when relative references are used in array
         verbose: true,
         dry: false,
-        //  exclude: ['shared.js']
       }),
 
       new CopyWebpackPlugin([
-        // Copy glob results (with dot files) to /absolute/path/
-        // { from: './static', to: '' },
-        //
         { from: './src/manifest.json', to: '' },
-        { from: './src/_assets', to: 'assets' },
-        { from: './src/devtools/coldfusion10.png', to: '' },
+        { from: './src/assets', to: 'assets' },
       ], {
         ignore: [
           '.*',
@@ -307,52 +288,14 @@ module.exports = (env,argv) => {
         copyUnmodified: true,
       }),
 
-      // new HtmlWebpackPlugin({
-      //   removeComments:true,
-      //   filename: 'index.html', // target name
-      //   favid: Date.now(), // it is reffered in template and forced favicon get updated
-      //   template: './src/index.ejs',
-      //   publicPath: '/',
-      //   inject: 'body',
-      //   argv: argv,
-
-      //   // ref:
-      //   // * https://github.com/kangax/html-minifier#options-quick-reference
-      //   // * https://kangax.github.io/html-minifier/
-      //   // * http://perfectionkills.com/experimenting-with-html-minifier/
-      //   minify: isBuild() ? {
-      //     minifyCSS: true,
-      //     minifyJS: true ,
-      //     removeComments: true,
-      //     collapseWhitespace: true,
-      //   } : false,
-      // }),
     ],
 
     stats: {
       children: false,
       maxModules: 0,
     },
-
-    // devServer: {
-    //   contentBase: './static',
-    //   historyApiFallback: true,
-    //   hot: true,
-    //   compress: true,
-    //   port: 9102,
-    //   stats: {
-    //     children: false,
-    //     maxModules: 0,
-    //   },
-    // }
   };
 
-// console.log('process.env.NODE_ENV',process.env.NODE_ENV)
-
-//   console.log('DEV',argv.mode)
-  // if (argv.mode === 'development') {
-    // config.devtool = 'source-map';
-  // }
   console.log('Build mode', isBuild())
   console.log('Using CDN(--cdn)', !!argv.cdn)
   console.log('externals',config.externals)
