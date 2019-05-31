@@ -10,8 +10,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const pkg = require('./package.json');
 
-const getManifest = require('./src/manifest')
-console.log(getManifest)
+// const getManifest = require('./src/manifest')
+// console.log(getManifest)
 
 // fs.writeFile('./dist/manifest.json', json, 'utf8' /* , callback */);
 
