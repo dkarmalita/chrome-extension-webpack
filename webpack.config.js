@@ -10,6 +10,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const pkg = require('./package.json');
 
+const getManifest = require('./src/manifest')
+console.log(getManifest)
+
+// fs.writeFile('./dist/manifest.json', json, 'utf8' /* , callback */);
+
 // require.main.paths = [path.join(__dirname, '..'), ...require.main.paths]
 require.main.paths = [__dirname, ...require.main.paths]
 
@@ -29,14 +34,21 @@ require.main.paths = [__dirname, ...require.main.paths]
 // }
 
 const htmlPlugins = []
-const addHtmlPage = (template, target) => {
+
+const addHtmlPage = (template, target, chunks) => {
   const result = new HtmlWebpackPlugin({
-    removeComments:true,
-    filename: target,//'index.html', // target name
-    favid: Date.now(), // it is reffered in template and forced favicon get updated
-    template: template,//'./src/index.ejs',
-    publicPath: '/',
-    inject: false,//'body',
+    inject: true,
+    chunks: chunks, // inject the only script eg: ['popup']
+    filename: 'popup.html',
+    template: './src/popup/index.ejs',
+
+    // removeComments:true,
+    // filename: target,//'index.html', // target name
+    // favid: Date.now(), // it is reffered in template and forced favicon get updated
+    // template: template,//'./src/index.ejs',
+    // publicPath: '/',
+    // inject: false,//'body',
+
     // argv: argv,
 
     // ref:
@@ -53,7 +65,7 @@ const addHtmlPage = (template, target) => {
   htmlPlugins.push(result)
 }
 
-addHtmlPage('./src/index.ejs', 'index.html')
+addHtmlPage('./src/popup/index.ejs', 'popup.html', ['popup', 'hot-reload'])
 
 module.exports = (env,argv) => {
 
@@ -258,14 +270,15 @@ module.exports = (env,argv) => {
         'process.env.ARGV': argv,
       }),
 
+      ...htmlPlugins,
       // new ExtractTextPlugin("styles.css"),
 
-      new HtmlWebpackPlugin({
-        inject: true,
-        chunks: ['popup'],
-        filename: 'popup.html',
-        template: './src/popup/index.ejs',
-      }),
+      // new HtmlWebpackPlugin({
+      //   inject: true,
+      //   chunks: ['popup'],
+      //   filename: 'popup.html',
+      //   template: './src/popup/index.ejs',
+      // }),
 
       new CleanWebpackPlugin(['./dist'], {
         root: __dirname, //  Useful when relative references are used in array

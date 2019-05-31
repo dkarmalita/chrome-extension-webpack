@@ -3,6 +3,16 @@ import ReactDOM from 'react-dom'
 
 import './styles.css'
 
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+  switch(request.type) {
+    case 'panda-info':
+      console.log('panda-info HERE', request.payload);
+      break;
+  }
+  return true;
+});
+
+
 const handleOnClick = (payload) => {
   chrome.extension.sendMessage({
       type: "super-power",
@@ -10,16 +20,17 @@ const handleOnClick = (payload) => {
   });
 }
 
-class HelloMessage extends React.Component {
-  render() {
-    return (
-      <div>
+const HelloMessage = ({ name }) => {
+  return (
+    <div>
+      <h1>{`Hello ${name}`}</h1>
+      <div className='buttonbar'>
         <button role="super-power" onClick={ ()=>handleOnClick(true) }>+Wow</button>
         <button role="super-power" onClick={ ()=>handleOnClick(false) }>-Wow</button>
         <button role="close-popup" onClick={ ()=>window.close() }>Close</button>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 ReactDOM.render(

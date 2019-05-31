@@ -8,6 +8,9 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
         case 'super-power':
             superPower(request.payload);
             break;
+        case 'panda-info':
+            console.log('panda-info', request.payload);
+            break;
         case 'echo':
             console.log('echo', request.payload);
             break;

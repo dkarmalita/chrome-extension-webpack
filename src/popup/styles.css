@@ -6,15 +6,18 @@ body {
   margin: 0;
   & > div {
     margin: 10px;
-    border: 1px solid red;
-    border-radius: 5px;
+    /*border: 1px solid green;*/
   }
 }
+
+.buttonbar {
+  /*margin: 10px;*/
+  border: 1px solid red;
+  border-radius: 5px;
+}
+
 button {
   &[role=close-popup] {
-    /*position: absolute;*/
-    /*right: 10px;*/
-    /*top: 10px;*/
     margin: 0 0 0 auto;
     display: block;
     float: right;

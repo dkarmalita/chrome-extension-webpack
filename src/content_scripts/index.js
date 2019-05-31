@@ -1,8 +1,9 @@
+import { getCookie, parseJwt } from './utils';
+
 // import './styles.css'
 // NOTE: these styles will be applied to the target page.
 
 window.cflog = ( m, ...x ) => console.log(`%cColdFire %c${m}`, 'background: #222; color: firebrick;', 'background: #222; color: #bada55', ...x )
-
 
 chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
@@ -16,9 +17,16 @@ chrome.extension.onMessage.addListener(function (message, sender, sendResponse) 
   }
 });
 
-window.onload = function(){
-    cflog('context_script is loaded')
-    cflog('onload happens', { window })
+function sendInfo(payload){
+  chrome.extension.sendMessage({ // send message to background
+      type: 'panda-info',
+      payload,
+  });
 }
 
-console.log(document.cookie)
+window.onload = function(){
+  sendInfo(parseJwt(getCookie('jwt-token')))
+  cflog('context_script is loaded')
+  cflog('onload happens', { window })
+}
+
