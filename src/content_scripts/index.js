@@ -41,6 +41,11 @@ chrome.extension.onMessage.addListener(function (message, sender, sendResponse) 
       broadcastInfo(userData, message.tabId)
       // sendResponse(userData)
       break;
+
+    case 'get-echo':
+      console.log(`'get-echo' received`)
+      sendResponse({ type: 'ECHO' })
+      break;
   }
 });
 
