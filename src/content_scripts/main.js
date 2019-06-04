@@ -17,10 +17,10 @@ const extensionListener = ((message, sender, sendResponse) => {
     // when a content_script get such request, it parses the cookie jwt token and broadcast the result.
     case 'get-crm-id':
       console.log('GET CRM ID REQ')
-      const userData = getUserData()
-      const { tabId } = message
       console.log('response', userData)
       console.log('cb', sendResponse)
+      const userData = getUserData()
+      const { tabId } = message
       sendPandeInfo({ userData, tabId })
       break;
 
