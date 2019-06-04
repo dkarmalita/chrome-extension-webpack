@@ -51,4 +51,3 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 // })
 
 // getInfoAsync().then(console.log)
-

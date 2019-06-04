@@ -1,3 +1,6 @@
 import getCookie from './getCookie';
 import parseJwt from './parseJwt';
-export { getCookie, parseJwt }
+import getUserData from './getUserData';
+import addWindowListener from './addWindowListener';
+
+export { getCookie, parseJwt, getUserData, addWindowListener }

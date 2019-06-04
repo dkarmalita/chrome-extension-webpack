@@ -2,7 +2,7 @@
 
 import './messenger';
 
-console.log('%cColdFire v0.1.0-dev.1', "color: red; font-size:15px;", (new Date).toISOString(), chrome.runtime.id )
+console.log('%c[POC]', "color: red; font-size:15px;", (new Date).toISOString(), chrome.runtime.id )
 
 // listCrmTabsAsync().then((tabsArr) => {
 //   tabsArr.forEach(tab => {
@@ -23,3 +23,5 @@ console.log('%cColdFire v0.1.0-dev.1', "color: red; font-size:15px;", (new Date)
 //     if(sendResponse)
 //       sendResponse({ farewell: "goodbye" });
 //   });
+
+// setInterval(()=>console.log('polling'), 1000)
