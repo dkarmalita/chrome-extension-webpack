@@ -1,4 +1,8 @@
-import { addWindowListener } from './utils';
+import { addWindowListener, isCrmTab } from './utils';
 import main from './main';
+import { log } from './logger';
 
-addWindowListener(main)
+if(isCrmTab()){
+  addWindowListener(main)
+  log('>> CRM TAB <<') // TODO: remove the console
+}

@@ -1,18 +1,10 @@
-// import { listCrmTabsAsync, toggleBadge } from './utils';
-// import { store } from './store';
-import { setBadge } from '../common/chrome-utils';
+import { listCrmTabsAsync, toggleBadge } from './utils';
+import { store } from './store';
 import { POLLING_INTERVAL, POLLING_ENABLED, MAX_POLLINGS } from '../config';
 
 /* logger
    ------ */
 const log = console.log
-
-/* badge management
-   ---------------- */
-
-export const toggleBadge = (state) => {
-  setBadge(state ? 'Wow!' : '');
-}
 
 /* crm tabs list
    ------------- */
@@ -41,6 +33,7 @@ const tabsCount = () => crmTabs.length
  * @return {Promise}  a promise which is resolving with the tab's answer
  */
 const getTabAnswer = (tabId, type, payload) => new Promise((resolve,reject) => {
+  log('INDEX',crmTabs.indexOf(tabId))
   const port = chrome.tabs.sendMessage(tabId, { type, payload }, function(response) {
     if(chrome.runtime.lastError) {
       reject('err-tab-closed');
@@ -69,10 +62,6 @@ const pollCrmTabs = () => {
       log('>> got crm data from', tabId, data)
       return data
     })
-    .then( data => {
-      sendToPopup('user-id-update', data )
-      return data
-    })
     .catch( e => {
       log(e)
       removeTab(tabId)
@@ -85,8 +74,7 @@ const pollCrmTabs = () => {
 const isPollingExecuted = () => (MAX_POLLINGS && pollsCount >= MAX_POLLINGS)
 
 const enablePolling = () => {
-  if( polling || !POLLING_ENABLED ){ return }
-  pollsCount = 0;
+  if(isPollingExecuted() || polling){ return }
   polling = setInterval(pollCrmTabs, POLLING_INTERVAL)
   log('polling enabled')
 }
@@ -100,38 +88,24 @@ const disablePolling = () => {
 /* popup channel
    ------------- */
 
-let _port = null
+/*===================================================*/
 
-const sendToPopup = (type, payload) => {
-  if( !_port ){ return }
-  _port.postMessage({ type, payload })
-  if(chrome.runtime.lastError) { _port = null }
-}
+// send 'get-crm-id' request to each found crm tab
+const sendTabReq = () =>
+  listCrmTabsAsync().then(tabsArr =>
+    tabsArr.forEach(tab => {
+      console.log('crm tab found', tab.id)
+      chrome.tabs.sendMessage(tab.id, {type: 'get-crm-id', tabId: tab.id});
+    }))
 
-const listenPopup = msg => {
-    console.log('PORT_MESSAGE', msg)
-    // if (msg.joke == "Knock knock")
-    //   port.postMessage({question: "Who's there?"});
-    // else if (msg.answer == "Madame")
-    //   port.postMessage({question: "Madame who?"});
-    // else if (msg.answer == "Madame... Bovary")
-    //   port.postMessage({question: "I don't get it."});
-}
-
-chrome.runtime.onConnect.addListener(function(port) {
-  console.log('ON_CONNECT HAPPENS', port)
-  _port = port
-  _port.onMessage.addListener(listenPopup);
-  _port.onDisconnect.addListener(function() {
-    _port = null
+const getData = () => chrome.tabs.getSelected(null, function(tab) {
+  chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(response) {
+    console.log(' HERE WE ARE ',response);
   });
 });
 
-/* extension wide events listener
-   ------------------------------ */
-
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-  // console.log(`got message`, request.type)
+  console.log(`got message`, request.type)
   switch(request.type) {
 
     // add each crm tab to list and enable polling
@@ -140,10 +114,37 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
       enablePolling()
       break;
 
-    // toggle 'Wow' badge
+// -----------
+
+    case 'get-state':
+      sendResponse(store.getState())
+      break;
+
     case 'super-power':
       toggleBadge(request.payload);
+      sendTabReq() // send 'get-crm-id' request to each found crm tab
+      // getData()
+      break;
+
+    case 'panda-info': // got info from a crm page
+      console.log('panda-info', request.payload, sender.tab.id );
+      const { user } = request.payload
+      store.setState({ user: { ...user, tabId: sender.tab.id } })
+      break;
+
+    case 'echo':
+      console.log('echo', request.payload);
       break;
   }
   return true;
 });
+
+// const getInfoAsync = () => new Promise(resolve=>{
+//   chrome.tabs.getSelected(null, (tab) => {
+//     chrome.tabs.sendMessage(tab.id, {type: "get-echo"}, (...args) => {
+//       resolve({ args })
+//     });
+//   });
+// })
+
+// getInfoAsync().then(console.log)

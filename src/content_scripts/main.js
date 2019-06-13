@@ -16,12 +16,13 @@ const extensionListener = ((message, sender, sendResponse) => {
 
     // when a content_script get such request, it parses the cookie jwt token and broadcast the result.
     case 'get-crm-id':
-      console.log('GET CRM ID REQ')
-      console.log('response', userData)
-      console.log('cb', sendResponse)
-      const userData = getUserData()
-      const { tabId } = message
-      sendPandeInfo({ userData, tabId })
+      // console.log('GET CRM ID REQ')
+      // console.log('response', userData)
+      // console.log('cb', sendResponse)
+      // const userData = getUserData()
+      // const { tabId } = message
+      // sendPandeInfo({ userData, tabId })
+      sendResponse(getUserData())
       break;
 
     case 'get-echo':
@@ -32,7 +33,8 @@ const extensionListener = ((message, sender, sendResponse) => {
 });
 
 export default function main(){
-  sendPandeInfo(getUserData())
   addExtensionListener(extensionListener)
+  sendMessage('crm-tab-loaded', null) // just send the notification + tabId to the background script
+  // sendPandeInfo(getUserData())
   log('context_script is loaded', { window })
 }
