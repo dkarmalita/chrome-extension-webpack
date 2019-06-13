@@ -2,8 +2,6 @@ import React from 'react';
 import { store, connect } from './store'
 import './App.css'
 
-import './crm-context';
-
 // make background connection
 var port = chrome.runtime.connect({name: "knockknock"});
 port.postMessage({joke: "Knock knock"});
