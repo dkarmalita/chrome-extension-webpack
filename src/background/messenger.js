@@ -1,6 +1,7 @@
 // import { listCrmTabsAsync, toggleBadge } from './utils';
 // import { store } from './store';
 import { setBadge } from '../common/chrome-utils';
+import { getUserBonus } from './api';
 import { POLLING_INTERVAL, POLLING_ENABLED, MAX_POLLINGS } from '../config';
 
 /* logger
@@ -70,7 +71,10 @@ const pollCrmTabs = () => {
       return data
     })
     .then( data => {
-      sendToPopup('user-id-update', data )
+      return getUserBonus(data.user.id)
+    })
+    .then( data => {
+      sendToPopup('user-id-update', data.data )
       return data
     })
     .catch( e => {
@@ -110,12 +114,6 @@ const sendToPopup = (type, payload) => {
 
 const listenPopup = msg => {
     console.log('PORT_MESSAGE', msg)
-    // if (msg.joke == "Knock knock")
-    //   port.postMessage({question: "Who's there?"});
-    // else if (msg.answer == "Madame")
-    //   port.postMessage({question: "Madame who?"});
-    // else if (msg.answer == "Madame... Bovary")
-    //   port.postMessage({question: "I don't get it."});
 }
 
 chrome.runtime.onConnect.addListener(function(port) {

@@ -1,7 +1,8 @@
 import { DataStore } from '../common/react-store';
 
 const { connect, store } = new DataStore({
-  user: { id: null, valid: false, loading: false }
+  user: { id: null, valid: false, loading: false },
+  bonus: null, currency: null, pw: null,
 })
 const stateLogger = state=>console.log('RS >> updated state',{state})
 store.subscribe(stateLogger)
