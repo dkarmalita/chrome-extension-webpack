@@ -104,7 +104,7 @@ const disablePolling = () => {
 /* popup channel
    ------------- */
 
-let _port = null
+let _port = null // !null while the popup is open
 
 const sendToPopup = (type, payload) => {
   if( !_port ){ return }
