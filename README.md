@@ -1,3 +1,4 @@
+WARNONG: Don't return 500 & 500+ errors from api here. details http://dev.chromium.org/throttling
 
 1. clone the extension and run it in development mode
 ```sh
