@@ -2,6 +2,8 @@
 // * https://medium.com/@xpl/hot-reloading-for-chrome-extensions-3da296916286
 // * https://github.com/xpl/crx-hotreload
 
+// extension's background apge
+
 const filesInDirectory = dir => new Promise (resolve =>
 
     dir.createReader ().readEntries (entries =>
@@ -23,38 +25,36 @@ const timestampForFilesInDirectory = dir =>
 
 const reload = () => {
 
-    chrome.tabs.query ({ active: true, currentWindow: true }, tabs => { // NB: see https://github.com/xpl/crx-hotreload/issues/5
+  chrome.tabs.query ({ active: true, currentWindow: true }, tabs => { // NB: see https://github.com/xpl/crx-hotreload/issues/5
 
-        if (tabs[0]) { chrome.tabs.reload (tabs[0].id) }
+    if (tabs[0]) { chrome.tabs.reload (tabs[0].id) }
 
-        chrome.runtime.reload ()
-    })
+    chrome.runtime.reload ()
+  })
 }
 
 const watchChanges = (dir, lastTimestamp) => {
 
-    timestampForFilesInDirectory (dir).then (timestamp => {
+  timestampForFilesInDirectory (dir).then (timestamp => {
 
-        if (!lastTimestamp || (lastTimestamp === timestamp)) {
+    if (!lastTimestamp || (lastTimestamp === timestamp)) {
 
-            setTimeout (() => watchChanges (dir, timestamp), 1000) // retry after 1s
+      setTimeout (() => watchChanges (dir, timestamp), 1000) // retry after 1s
 
-        } else {
+    } else {
 
-            reload ()
-        }
-    })
+      reload ()
+    }
+  })
 
 }
 
 chrome.management.getSelf (self => {
 
-    if (self.installType === 'development') {
+  if (self.installType === 'development') {
 
-        chrome.runtime.getPackageDirectoryEntry (dir => watchChanges (dir))
-    }
+    chrome.runtime.getPackageDirectoryEntry (dir => watchChanges (dir))
+  }
 })
 
-// console.log("%cBlue! %cGreen", "color: blue; font-size:15px;", "color: green; font-size:12px;");
 console.log(`%cExtension Hot Reload (EHR) enabled `, 'background: #222; color: #bada55')
-// extension's background apge

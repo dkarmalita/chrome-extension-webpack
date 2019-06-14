@@ -5,10 +5,12 @@ const autoprefixer = require('autoprefixer')
 const cssEasyImport = require('postcss-easy-import')
 const CompressionPlugin = require("compression-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const pkg = require('./package.json');
+
+const JsonManifestPlugin = require('./manifest.plugin');
 
 // const getManifest = require('./src/manifest')
 // console.log(getManifest)
@@ -288,7 +290,7 @@ module.exports = (env,argv) => {
       }),
 
       new CopyWebpackPlugin([
-        { from: './src/manifest.json', to: '' },
+        // { from: './src/manifest.json', to: '' },
         { from: './src/assets', to: 'assets' },
       ], {
         ignore: [
@@ -301,6 +303,11 @@ module.exports = (env,argv) => {
         // to `true` copies all files.
         copyUnmodified: true,
       }),
+
+      new JsonManifestPlugin({
+        config: path.resolve(__dirname, './src/manifest.js'),
+        options: { /* any options to get in the config generator */ },
+      })
 
     ],
 
