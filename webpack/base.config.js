@@ -12,11 +12,6 @@ const pkg = require('../package.json');
 
 const Manifest = require('./manifest.plugin/manifest.plugin');
 
-// const getManifest = require('./src/manifest')
-// console.log(getManifest)
-
-// fs.writeFile('./dist/manifest.json', json, 'utf8' /* , callback */);
-
 // require.main.paths = [path.join(__dirname, '..'), ...require.main.paths]
 // require.main.paths = [__dirname, ...require.main.paths]
 
