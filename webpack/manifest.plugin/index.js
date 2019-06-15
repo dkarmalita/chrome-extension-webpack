@@ -1,1 +1,1 @@
-exports = require('./manifest.plugin');
+module.exports = require('./manifest.plugin');

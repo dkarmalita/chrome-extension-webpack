@@ -1,1 +1,1 @@
-exports = require('./hot-reload.js');
+module.exports = require('./hot-reload.js');

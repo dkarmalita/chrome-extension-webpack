@@ -10,7 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const pkg = require('../package.json');
 
-const Manifest = require('./manifest.plugin/manifest.plugin');
+const Manifest = require('./manifest.plugin');
 
 // require.main.paths = [path.join(__dirname, '..'), ...require.main.paths]
 // require.main.paths = [__dirname, ...require.main.paths]
@@ -146,7 +146,7 @@ module.exports = (env,argv) => {
     mode: isBuild() ? 'production' : 'development',
 
     entry: {
-      'hot-reload': path.join(__dirname, './hrs/hot-reload'),
+      'hot-reload': path.join(__dirname, './hrs'),
       background: './src/background',
       content_scripts: './src/content_scripts',
       // devtools: './src/devtools',
