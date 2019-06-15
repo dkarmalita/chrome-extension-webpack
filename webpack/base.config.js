@@ -11,6 +11,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const pkg = require('../package.json');
 
 const Manifest = require('./manifest.plugin');
+const babelConfig = require('./babel.config');
 
 // require.main.paths = [path.join(__dirname, '..'), ...require.main.paths]
 // require.main.paths = [__dirname, ...require.main.paths]
@@ -173,9 +174,12 @@ module.exports = (env,argv) => {
           exclude: [/node_modules/],
           use: [{
             loader: 'babel-loader',
-            options: {
-              ...JSON.parse(fs.readFileSync(path.resolve(__dirname, './.babelrc'))),
-            }
+            options: babelConfig,
+
+            /* NOTE: Parsing of .babelrs pattern */
+            // options: {
+            //   ...JSON.parse(fs.readFileSync(path.resolve(__dirname, './.babelrc'))),
+            // }
 
           }]
         },
