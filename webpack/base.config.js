@@ -8,9 +8,9 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 
-const JsonManifestPlugin = require('./manifest.plugin');
+const Manifest = require('./manifest.plugin/manifest.plugin');
 
 // const getManifest = require('./src/manifest')
 // console.log(getManifest)
@@ -18,7 +18,7 @@ const JsonManifestPlugin = require('./manifest.plugin');
 // fs.writeFile('./dist/manifest.json', json, 'utf8' /* , callback */);
 
 // require.main.paths = [path.join(__dirname, '..'), ...require.main.paths]
-require.main.paths = [__dirname, ...require.main.paths]
+// require.main.paths = [__dirname, ...require.main.paths]
 
 // const config = {
 //   CDN: true,
@@ -117,7 +117,7 @@ module.exports = (env,argv) => {
       minRatio: 0.8
     }),
 
-    new CleanWebpackPlugin(['./dist'], {
+    new CleanWebpackPlugin(['../dist'], {
       root: __dirname, //  Useful when relative references are used in array
       verbose: true,
       dry: false,
@@ -151,17 +151,17 @@ module.exports = (env,argv) => {
     mode: isBuild() ? 'production' : 'development',
 
     entry: {
-      'hot-reload': './hot-reload',
+      'hot-reload': path.join(__dirname, './hrs/hot-reload'),
       background: './src/background',
       content_scripts: './src/content_scripts',
       // devtools: './src/devtools',
-      popup: 'src/popup',
+      popup: './src/popup',
       // panel: 'src/devtools/panel',
     },
 
     output: {
       filename: '[name].js',
-      path: __dirname + '/dist'
+      path: path.join(__dirname, '../dist')
     },
 
     // externals: peersToExternals(pkg.peerDependencies),
@@ -179,7 +179,7 @@ module.exports = (env,argv) => {
           use: [{
             loader: 'babel-loader',
             options: {
-              ...JSON.parse(fs.readFileSync(path.resolve(__dirname, './.babelrc'))),
+              ...JSON.parse(fs.readFileSync(path.resolve(__dirname, '../.babelrc'))),
             }
 
           }]
@@ -283,7 +283,7 @@ module.exports = (env,argv) => {
       //   template: './src/popup/index.ejs',
       // }),
 
-      new CleanWebpackPlugin(['./dist'], {
+      new CleanWebpackPlugin(['../dist'], {
         root: __dirname, //  Useful when relative references are used in array
         verbose: true,
         dry: false,
@@ -304,8 +304,8 @@ module.exports = (env,argv) => {
         copyUnmodified: true,
       }),
 
-      new JsonManifestPlugin({
-        config: path.resolve(__dirname, './src/manifest.js'),
+      new Manifest({
+        config: path.resolve(__dirname, '../src/manifest.js'),
         options: { /* any options to get in the config generator */ },
       })
 

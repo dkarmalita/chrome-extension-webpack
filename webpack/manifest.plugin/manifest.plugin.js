@@ -3,12 +3,12 @@ const { RawSource, ConcatSource, OriginalSource } = require("webpack-sources");
 
 const dynamicRequire = path => eval(fs.readFileSync(path, 'utf8'))
 
-module.exports = class JsonManifestPlugin {
+module.exports = class ManifestPlugin {
   constructor(options) {
     this.options = options;
   }
   apply(compiler) {
-    compiler.hooks.emit.tapAsync('JsonManifestPlugin', (compilation, cb) => {
+    compiler.hooks.emit.tapAsync('ManifestPlugin', (compilation, cb) => {
 
       const { config } = this.options
 
