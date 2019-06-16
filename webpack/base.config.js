@@ -63,9 +63,10 @@ const addHtmlPage = (template, target, chunks) => {
   htmlPlugins.push(result)
 }
 
+// FIXME: hot-reload script is neccesary only in development mode
 addHtmlPage('./src/popup/index.ejs', 'popup.html', ['popup', 'hot-reload'])
 
-module.exports = (env,argv) => {
+module.exports = (params) => (env,argv) => {
 
   const isBuild = () => argv.mode ? argv.mode === 'production' : process.env.npm_lifecycle_event === 'build'
 

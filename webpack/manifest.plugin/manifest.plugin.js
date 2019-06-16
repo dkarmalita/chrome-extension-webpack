@@ -5,7 +5,7 @@ const dynamicRequire = path => eval(fs.readFileSync(path, 'utf8'))
 
 module.exports = class ManifestPlugin {
   constructor(options) {
-    this.options = options;
+    this.options = options; /* all of the options we've passed to the plugin */
   }
   apply(compiler) {
     compiler.hooks.emit.tapAsync('ManifestPlugin', (compilation, cb) => {
