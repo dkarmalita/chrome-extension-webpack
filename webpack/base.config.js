@@ -8,13 +8,27 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+// require.main.paths = [
+//   path.join(__dirname, '..'),
+//   path.join(__dirname, '../packages'),
+//   ...require.main.paths
+// ]
+
+// console.log(require.main.paths)
+
+// try {
+// console.log(require.resolve('manifest'))
+// } catch (e) {
+//   process.exit(0)
+// }
+// const Manifest = require('@kard/webpack-manifest-plugin');
+const Manifest = require('./manifest.plugin');
+
 const pkg = require('../package.json');
 
-const Manifest = require('./manifest.plugin');
 const babelConfig = require('./babel.config');
 
-// require.main.paths = [path.join(__dirname, '..'), ...require.main.paths]
-// require.main.paths = [__dirname, ...require.main.paths]
 
 // const config = {
 //   CDN: true,
@@ -305,6 +319,7 @@ module.exports = (params) => (env,argv) => {
       }),
 
       new Manifest({
+        output: 'manifest.json',
         config: path.resolve(__dirname, '../src/manifest.js'),
         options: { /* any options to get in the config generator */ },
       })
