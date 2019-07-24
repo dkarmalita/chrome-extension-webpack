@@ -1,6 +1,6 @@
 export const CRM_DOMAIN_ID = 'ptscrm.com' // 'http://localhost'
 export const MOCK_USER_JWT = false
-export const MOCK_API_CALLS_ONLY = false
+export const MOCK_API_CALLS_ONLY = true
 
 export const POLLING_INTERVAL = 3000
 export const POLLING_ENABLED = true // false - block the polling
