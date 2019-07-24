@@ -1,7 +1,7 @@
 /* maximum height of 600px and maximum width of 800px.  */
 body {
-  width: 798px;
-  height: 598px;
+  width: 198px;
+  height: 198px;
   border: 1px solid aqua;
   margin: 0;
   & > div {
